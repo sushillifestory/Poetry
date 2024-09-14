@@ -8,7 +8,7 @@
         body {
             margin: 0;
             font-family: 'Arial', sans-serif;
-            background-color: #fafafa;
+            background: linear-gradient(to right, #f8b195, #f67280, #c06c84, #6c5b7b, #355c7d);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -21,7 +21,7 @@
             width: 90%;
             max-width: 800px;
             height: 80vh;
-            perspective: 2000px;
+            perspective: 1500px;
             position: relative;
         }
 
@@ -36,7 +36,6 @@
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
             overflow: hidden;
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
             transition: transform 1s;
@@ -45,28 +44,67 @@
         .page img {
             width: 100%;
             height: 100%;
-            object-fit: cover;
-            position: absolute;
-            top: 0;
-            left: 0;
-            z-index: -1;
+            object-fit: contain;
+        }
+
+        .cover {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .cover h1 {
+            font-size: 3rem;
+            color: #355c7d;
+        }
+
+        .cover button {
+            margin-top: 20px;
+            padding: 15px 30px;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: #f67280;
+            color: white;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .cover button:hover {
+            background-color: #f8b195;
+            transform: scale(1.05);
         }
 
         .nav-button {
             margin-top: 20px;
-            padding: 10px 20px;
-            font-size: 16px;
+            padding: 15px 30px;
+            font-size: 18px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            background-color: #3498db;
+            background-color: #c06c84;
             color: white;
             transition: background-color 0.3s ease, transform 0.3s ease;
         }
 
         .nav-button:hover {
-            background-color: #2980b9;
+            background-color: #355c7d;
             transform: scale(1.05);
+        }
+
+        .nav-button.left {
+            position: absolute;
+            left: 20px;
+        }
+
+        .nav-button.right {
+            position: absolute;
+            right: 20px;
         }
 
         .hidden {
@@ -76,7 +114,15 @@
 </head>
 <body>
     <div class="book">
-        <div class="page" id="page1">
+        <!-- Front Cover Page -->
+        <div class="page" id="cover">
+            <div class="cover">
+                <h1>The Awakening</h1>
+                <button onclick="startBook()">Open</button>
+            </div>
+        </div>
+        <!-- Content Pages -->
+        <div class="page hidden" id="page1">
             <img src="https://github.com/user-attachments/assets/0c286998-e596-42f8-baec-9e45b33bc88b" alt="Poem Background 1">
         </div>
         <div class="page hidden" id="page2">
@@ -101,26 +147,42 @@
             <img src="https://github.com/user-attachments/assets/56ac451c-d4cd-4dc6-992f-2a7e404dfba5" alt="Poem Background 8">
         </div>
     </div>
-    <button class="nav-button" onclick="prevPage()">&#8592; Prev</button>
-    <button class="nav-button" onclick="nextPage()">Next &#8594;</button>
+    <button class="nav-button left hidden" onclick="prevPage()">&#8592; Prev</button>
+    <button class="nav-button right hidden" onclick="nextPage()">Next &#8594;</button>
 
     <script>
-        let currentPage = 1;
+        let currentPage = 0; // Start with the cover
         const totalPages = 8; // Total number of pages
+
+        function startBook() {
+            document.getElementById('cover').classList.add('hidden');
+            document.getElementById('page1').classList.remove('hidden');
+            document.querySelector('.nav-button.left').classList.remove('hidden');
+            document.querySelector('.nav-button.right').classList.remove('hidden');
+            currentPage = 1;
+        }
 
         function nextPage() {
             if (currentPage < totalPages) {
-                document.getElementById('page' + currentPage).classList.add('hidden');
+                const current = document.getElementById('page' + currentPage);
+                current.style.transform = "rotateY(-180deg)";
+                setTimeout(() => current.classList.add('hidden'), 500); // Hide after animation
                 currentPage++;
-                document.getElementById('page' + currentPage).classList.remove('hidden');
+                const next = document.getElementById('page' + currentPage);
+                next.classList.remove('hidden');
+                next.style.transform = "rotateY(0deg)";
             }
         }
 
         function prevPage() {
             if (currentPage > 1) {
-                document.getElementById('page' + currentPage).classList.add('hidden');
+                const current = document.getElementById('page' + currentPage);
+                current.style.transform = "rotateY(0deg)";
+                setTimeout(() => current.classList.add('hidden'), 500); // Hide after animation
                 currentPage--;
-                document.getElementById('page' + currentPage).classList.remove('hidden');
+                const prev = document.getElementById('page' + currentPage);
+                prev.classList.remove('hidden');
+                prev.style.transform = "rotateY(0deg)";
             }
         }
     </script>
