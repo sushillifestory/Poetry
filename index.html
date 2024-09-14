@@ -81,7 +81,9 @@
         }
 
         .nav-button {
-            margin-top: 20px;
+            position: absolute;
+            top: 90%;
+            transform: translateY(-50%);
             padding: 15px 30px;
             font-size: 18px;
             border: none;
@@ -90,21 +92,20 @@
             background-color: #c06c84;
             color: white;
             transition: background-color 0.3s ease, transform 0.3s ease;
+            z-index: 10;
+        }
+
+        .nav-button.left {
+            left: 20px;
+        }
+
+        .nav-button.right {
+            right: 20px;
         }
 
         .nav-button:hover {
             background-color: #355c7d;
             transform: scale(1.05);
-        }
-
-        .nav-button.left {
-            position: absolute;
-            left: 20px;
-        }
-
-        .nav-button.right {
-            position: absolute;
-            right: 20px;
         }
 
         .hidden {
